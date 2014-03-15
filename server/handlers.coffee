@@ -1,16 +1,35 @@
 haml = require('haml')
+sass = require('node-sass')
 fs = require('fs')
 aDay = 86400000;
 staticOpts = {maxAge: aDay}
 
+###
+built = {}
 
 build = (path, data) ->
-	template = fs.readFileSync(path, 'utf8')
-	html = haml.render(template, {locals: data})
-	return html
+	cached = built[path]
 
+	if !cached
+		template = fs.readFileSync(path, 'utf8')
+		extension = path.split('.')[1]
+		if extension == 'haml'
+			compiled = haml.render(template, {locals: data})
+		else if extension == 'scss'
+			compiled = sass.renderSync({data: template})
+		else
+			throw Error.new('unrecognized extension requested')
+		built[path] = compiled
+		console.log('compiled file for ', path, compiled)
+	else
+		compiled = cached
+	return compiled
+###
 module.exports = {
 	root: (req, res) ->
+		res.render('layout.hamlc')
+		###
 		html = build('public/layout.haml', null)
 		res.send(html)
- }
+		###
+  }

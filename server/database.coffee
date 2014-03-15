@@ -20,7 +20,7 @@ module.exports = [
 		app.configure('development', ->
 			options = 
 				host: 'localhost',
-				user: 'me'
+				user: 'me',
 				password: 'secret'
 			)
 	,
