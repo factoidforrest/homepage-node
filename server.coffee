@@ -15,8 +15,12 @@ app.use(require('sass-middleware')({
   src: 'public/stylesheets'#,
   #quiet: true
 }))
-#doesn't seem to uglify
-app.locals.uglify = true
+app.use(coffeeMiddleware({
+    src: __dirname + '/public/scripts',
+    compress: false
+}))
+
+app.locals.uglify = false
 
 #static assets
 app.use(express.static(__dirname + '/public'))
