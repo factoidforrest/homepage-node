@@ -5,7 +5,11 @@ coffeeMiddleware = require('coffee-middleware')
 handlers = require('./server/handlers')
 sass = require('node-sass')
 database = require('./server/database')
-new database(app)
+console.log("about to start orm")
+orm = require('./server/ORM')(app)
+orm.sync()
+looper = ->
+
 #engines = require('consolidate')
 #sassMiddleware = require('sass-middleware')
 
