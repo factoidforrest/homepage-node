@@ -31,6 +31,7 @@ class Database
       else # connnection idle timeout (the wait_timeout
         throw err # server variable configures this)
 
+  #passes usable db object into the callback
   connection: (callback) => 
     if @connection.status == 'connected'
       callback(null, @connection)
