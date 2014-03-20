@@ -8,7 +8,6 @@ database = require('./server/database')
 console.log("about to start orm")
 orm = require('./server/ORM')(app)
 orm.sync()
-looper = ->
 
 #engines = require('consolidate')
 #sassMiddleware = require('sass-middleware')

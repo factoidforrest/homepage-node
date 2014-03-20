@@ -30,6 +30,7 @@ class ORM
 cached = null
 module.exports = (app) ->
   if cached
+    assert(cached != null)
     return cached
   else 
     return cached = new ORM(app)

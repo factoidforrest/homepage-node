@@ -1,7 +1,9 @@
-mysql = require('mysql')
+mysql = require 'mysql'
+async = require 'asynx'
 
 class Database
-
+  #Queue
+  Q = []
   handleDisconnect: =>
     self = this
     @connection = mysql.createConnection(@options) # Recreate the connection, since
@@ -11,8 +13,13 @@ class Database
         console.log "error when connecting to db, retrying:", err
         setTimeout self.handleDisconnect, 2000 # We introduce a delay before attempting to reconnect,
       else
+        if self.Q.length > 0
+          tasks = self.Q
+          self.Q = []
+          async.task tasks, (err, results) ->
+            console.log('restarted %s backlogged tasks', results.length)
         console.log("database connected")
-        self.connection.emit('connected')
+        
 
     # to avoid a hot loop, and to allow our node script to
     # process asynchronous requests in the meantime.
@@ -24,15 +31,16 @@ class Database
       else # connnection idle timeout (the wait_timeout
         throw err # server variable configures this)
 
-  connect: (callback)=> 
+  connection: (callback) => 
     if @connection.status == 'connected'
       callback(null, @connection)
     else
-      console.log("ATTEMPTED TO USE DISCONNECTED DB, setting retry listener")
-      #untested, only tries once more
-      @connection.on 'connected', retry = (event)->
-        e.source.removeEventListener('connected', arguments.callee)
-        callback(null,@connection)
+      console.log("ATTEMPTED TO USE DISCONNECTED DB, queueing request")
+      #untested
+      this.Q.push (cb) -> 
+        callback(null, @connection)
+        cb()
+
 
 
   constructor: (app)->
