@@ -7,8 +7,6 @@
     "express": "~3.4.8",
     "coffee-middleware": "~0.2.1",
     "haml": "~0.4.3",
-    "haml-coffee": "~1.14.1",
-    "hamljs": "~0.6.2",
     "pg": "~2.11.1",
     "node-sass": "~0.8.3",
     "node": "~0.0.0",

@@ -1,10 +1,9 @@
-haml = require('haml')
 sass = require('node-sass')
 fs = require('fs')
 aDay = 86400000;
 staticOpts = {maxAge: aDay}
 
-###
+### this works fine but doesn't update on file change, may as well use middleware instead
 built = {}
 
 build = (path, data) ->
@@ -27,7 +26,7 @@ build = (path, data) ->
 ###
 module.exports = {
 	root: (req, res) ->
-		res.render('layout.hamlc')
+		res.render('root.jade')
 		###
 		html = build('public/layout.haml', null)
 		res.send(html)

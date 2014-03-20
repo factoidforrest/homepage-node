@@ -4,8 +4,6 @@ app = express()
 coffeeMiddleware = require('coffee-middleware')
 handlers = require('./server/handlers')
 sass = require('node-sass')
-#database = require('./server/database')
-console.log("about to start orm")
 orm = require('./server/ORM')(app)
 orm.sync()
 
