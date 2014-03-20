@@ -4,7 +4,7 @@ app = express()
 coffeeMiddleware = require('coffee-middleware')
 handlers = require('./server/handlers')
 sass = require('node-sass')
-database = require('./server/database')
+#database = require('./server/database')
 console.log("about to start orm")
 orm = require('./server/ORM')(app)
 orm.sync()
@@ -15,11 +15,12 @@ orm.sync()
 #database = require 'server/database'
 #database.initialize(app)
 #app.set('views', __dirname + '/public')
+app.set('views', __dirname + '/views')
 app.use(express.logger())
 
 app.locals.uglify = false
-app.engine 'hamlc', require('haml-coffee').__express
-
+#app.engine 'hamlc', require('haml-coffee').__express
+app.set('view engine', 'jade')
 app.use(
   sass.middleware({
     src: __dirname + '/views/stylesheets',

@@ -1,5 +1,5 @@
 mysql = require 'mysql'
-async = require 'asynx'
+async = require 'asyn'
 
 class Database
   #Queue
@@ -11,7 +11,7 @@ class Database
     @connection.connect (err) -> # The server is either down
       if err # or restarting (takes a while sometimes).
         console.log "error when connecting to db, retrying:", err
-        setTimeout self.handleDisconnect, 2000 # We introduce a delay before attempting to reconnect,
+        setTimeout self.handleDisconnect, 2000 
       else
         if self.Q.length > 0
           tasks = self.Q
@@ -20,7 +20,7 @@ class Database
             console.log('restarted %s backlogged tasks', results.length)
         console.log("database connected")
         
-
+    # We introduce a delay before attempting to reconnect,
     # to avoid a hot loop, and to allow our node script to
     # process asynchronous requests in the meantime.
     # If you're also serving http, display a 503 error.
