@@ -1,7 +1,8 @@
 
 express = require('express')
 app = express()
-coffeeMiddleware = require('coffee-middleware')
+#coffeeMiddleware = require('coffee-middleware')
+coffeescript = require('connect-coffee-script')
 handlers = require('./server/handlers')
 sass = require('node-sass')
 orm = require('./server/ORM')(app)
@@ -27,13 +28,21 @@ app.use(
     outputStyle: 'compressed'
   })
 )
-
-app.use(coffeeMiddleware({
-    src: __dirname + '/views/scripts',
-    dest: __dirname + '/public'
-    compress: false
+###
+app.use(
+  coffeeMiddleware({
+    src: __dirname + '/public/scripts',
+    compress: false,
+    debug: true,
+    bare: true #needed for require.js compatability 
+  })
+)
+###
+app.use(coffeescript({
+  src: __dirname + '/views/js',
+  dest: __dirname + '/public/js',
+  bare: true
 }))
-
 
 #static assets
 app.use(express.static(__dirname + '/public'))
